@@ -41,4 +41,29 @@ def text_node_to_html_node(text_node):
         case TextType.IMAGE:
             return LeafNode("img", None, {"src": text_node.url, "alt": text_node.text})
         case _:
-            raise Exception("TextNode did not contain a TextType")
+            raise Exception(f"unknown text type: {text_node.text_type}")
+
+def split_nodes_delimiter(old_nodes, delimiter, text_type):
+    new_nodes = []
+    for node in old_nodes:
+        if node.text_type is not TextType.TEXT:
+            new_nodes.append(node)
+            continue
+
+        parts = node.text.split(delimiter)
+        if len(parts) == 1:
+            new_nodes.append(node)
+            continue
+        if len(parts) % 2 == 0:
+            raise Exception(f"closing delimiter ({delimiter}) not found in '{node.text}'")
+        split_nodes = []
+        for i in range(len(parts)):
+            if parts[i] == "":
+                continue
+            if parts[i] == parts[i].strip():
+                split_nodes.append(TextNode(parts[i], text_type))
+            else:
+                split_nodes.append(TextNode(parts[i], TextType.TEXT))
+        new_nodes.extend(split_nodes)
+    return new_nodes
+        
