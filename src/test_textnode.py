@@ -132,5 +132,43 @@ class TestSplitNodesDelimiter(unittest.TestCase):
         with self.assertRaises(Exception):
             split_nodes_delimiter([node], "**", TextType.BOLD)
 
+class TestExtractLinksAndImages(unittest.TestCase):
+    def test_extract_markdown_images(self):
+        matches = extract_markdown_images(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
+     
+    def test_extract_markdown_links(self):
+        matches = extract_markdown_links(
+            "This is text with a [link](https://meriam.dev)"
+        )
+        self.assertListEqual([("link", "https://meriam.dev")], matches)
+
+    def test_extract_multiple_markdown_images(self):
+        matches = extract_markdown_images(
+            "This is text with ![one](https://meriam.dev/one.png) and ![two](https://meriam.dev/two.png)"
+        )
+        self.assertListEqual(
+            [("one", "https://meriam.dev/one.png"), ("two", "https://meriam.dev/two.png")],
+            matches,
+        )
+
+    def test_extract_multiple_markdown_links(self):
+        matches = extract_markdown_links(
+            "This is text with [one](https://meriam.dev/one) and [two](https://meriam.dev/two)"
+        )
+        self.assertListEqual(
+            [("one", "https://meriam.dev/one"), ("two", "https://meriam.dev/two")],
+            matches,
+        )
+
+    def test_extract_markdown_links_ignores_images(self):
+        matches = extract_markdown_links(
+            "This is text with ![image](https://i.imgur.com/aKaOqIh.gif) and [link](https://meriam.dev)"
+        )
+        self.assertNotIn(("image", "https://i.imgur.com/aKaOqIh.gif"), matches)
+        
+
 if __name__ == "__main__":
     unittest.main()
