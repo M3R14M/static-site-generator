@@ -1,4 +1,5 @@
 from copy_directory import *
+from generator import generate_page
 import os
 
 def main():
@@ -9,6 +10,12 @@ def main():
     print("Starting directory copy...")
     copy_directory(static_dir, public_dir)
     print("Directory copy completed!")
+    
+    content_path = os.path.join(os.path.dirname(script_dir), "content", "index.md")
+    template_path = os.path.join(os.path.dirname(script_dir), "template.html")
+    dest_path = os.path.join(public_dir, "index.html")
+    
+    generate_page(content_path, template_path, dest_path)
 
 if __name__ == '__main__':
     main()
