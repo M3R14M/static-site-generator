@@ -28,10 +28,10 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         for i in range(len(parts)):
             if parts[i] == "":
                 continue
-            if parts[i] == parts[i].strip():
-                split_nodes.append(TextNode(parts[i], text_type))
-            else:
+            if i % 2 == 0:
                 split_nodes.append(TextNode(parts[i], TextType.TEXT))
+            else:
+                split_nodes.append(TextNode(parts[i], text_type))
         new_nodes.extend(split_nodes)
     return new_nodes
 
