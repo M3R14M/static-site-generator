@@ -101,6 +101,12 @@ class TestExtractLinksAndImages(unittest.TestCase):
             "This is text with ![image](https://i.imgur.com/aKaOqIh.gif) and [link](https://meriam.dev)"
         )
         self.assertNotIn(("image", "https://i.imgur.com/aKaOqIh.gif"), matches)
+
+    def test_extract_markdown_relative_image_url(self):
+        matches = extract_markdown_images(
+            "This is text with ![JRR Tolkien sitting](/images/tolkien.png)"
+        )
+        self.assertListEqual([("JRR Tolkien sitting", "/images/tolkien.png")], matches)
         
 class TestSplitNodesLinksAndImages(unittest.TestCase):
     def test_split_images(self):

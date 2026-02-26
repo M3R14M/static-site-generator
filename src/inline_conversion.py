@@ -36,12 +36,12 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return new_nodes
 
 def split_nodes_image(old_nodes):
-    regex = r"(!\[[\w\s]*]\(.{0,5}://[^\s!]*\))"
+    regex = r"(!\[[^\]]*\]\([^\s)]+\))"
     fn = extract_markdown_images
     return split_nodes_helper(old_nodes, regex, TextType.IMAGE, fn)
     
 def split_nodes_link(old_nodes):
-    regex = r"((?<!\!)\[[\w\s]*]\(.{0,5}://[^\s!]*\))"
+    regex = r"((?<!\!)\[[^\(\)]*\]\([^\s)]+\))"
     fn = extract_markdown_links
     return split_nodes_helper(old_nodes, regex, TextType.LINK, fn)
 
@@ -68,10 +68,10 @@ def split_nodes_helper(old_nodes, regex, text_type, extraction_function):
     return new_nodes
 
 def extract_markdown_images(text):
-    regex = r"!\[([\w\s]*)]\((.{0,5}://[^\s!]*)\)"
+    regex = r"!\[([^\]]*)\]\(([^\s)]+)\)"
     return re.findall(regex, text)
 
 def extract_markdown_links(text):
-    regex = r"(?<!\!)\[([\w\s]*)]\((.{0,5}://[^\s!]*)\)"
+    regex = r"(?<!\!)\[([^\]]*)\]\(([^\s)]+)\)"
     return re.findall(regex, text)
 

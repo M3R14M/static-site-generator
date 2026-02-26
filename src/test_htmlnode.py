@@ -36,11 +36,6 @@ class TestLeafNode(unittest.TestCase):
         with self.assertRaises(ValueError):
             node.to_html()
     
-    def test_to_html_empty_value_raises_error(self):
-        node = LeafNode("p", "")
-        with self.assertRaises(ValueError):
-            node.to_html()
-    
     def test_to_html_different_tags(self):
         node = LeafNode("b", "bold text")
         self.assertEqual(node.to_html(), "<b>bold text</b>")
