@@ -1,5 +1,5 @@
 from copy_directory import *
-from generator import generate_page
+from generator import generate_pages_recursive
 import os
 
 def main():
@@ -11,11 +11,10 @@ def main():
     copy_directory(static_dir, public_dir)
     print("Directory copy completed!")
     
-    content_path = os.path.join(os.path.dirname(script_dir), "content", "index.md")
+    content_path = os.path.join(os.path.dirname(script_dir), "content")
     template_path = os.path.join(os.path.dirname(script_dir), "template.html")
-    dest_path = os.path.join(public_dir, "index.html")
     
-    generate_page(content_path, template_path, dest_path)
+    generate_pages_recursive(content_path, template_path, public_dir)
 
 if __name__ == '__main__':
     main()
